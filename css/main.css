@@ -86,3 +86,12 @@ article .url{
 .article-details {
   font-size: 7pt;
 }
+
+
+
+@media (max-width:800px) {
+  body {
+    padding: 0;
+    width: 100%;
+  }
+}

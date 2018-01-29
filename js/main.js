@@ -28,14 +28,14 @@ function newPost(postNumber, i) {
     if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
        if (xmlhttp.status == 200) {
          var apiArticle = JSON.parse(xmlhttp.responseText);
-         console.log(apiArticle);
+         var hostname = apiArticle.url.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0]; //parse url into only hostname
          var newArticle = document.createElement("article");
          newArticle.innerHTML = `
          <div class="article-title">
            <span class="number">${i+1}.</span>
            <img class="arrow" src="images/arrow.gif" alt="arrow">
            <span class="title"><a href="${apiArticle.url}">${apiArticle.title}</a></span>
-           <span class="url">(${apiArticle.url})</span>
+           <span class="url">(${hostname})</span>
          </div>
          <div class="article-details">
            <span>${apiArticle.score}</span>
