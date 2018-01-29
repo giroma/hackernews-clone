@@ -1,0 +1,83 @@
+body {
+  font-family: Verdana, sans-serif;
+  margin: 0 auto;
+  padding: 7pt;
+  width: 85%;
+
+}
+
+header{
+  background-color: #ff6600;
+  padding: 2pt 2pt 2pt 2pt;
+}
+
+nav {
+  font-size: 10pt;
+  display: inline-block;
+  vertical-align: top;
+  line-height: 15pt;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+}
+
+nav li{
+  list-style: none;
+  float: left;
+  padding-left: 3pt;
+}
+
+a{
+  text-decoration: none;
+}
+
+nav a{
+  color: black;
+}
+
+
+#logo {
+  border: 1px solid white;
+  display: inline-block;
+  float: left;
+}
+
+.login{
+  display: inline-block;
+  float: right;
+}
+
+.login a{
+  font-size: 10pt;
+  color: black;
+  vertical-align: top;
+  line-height: 15pt;
+}
+
+article {
+  color: #828282;
+  background-color: #f6f6ef;
+  font-size: 10pt;
+}
+
+.article-details {
+  padding-left: 33px;
+}
+
+article .url{
+  font-size: 8pt;
+}
+
+.title {
+  color: black;
+}
+
+.arrow {
+  width: 10px;
+}
+
+.article-details {
+  font-size: 7pt;
+}
