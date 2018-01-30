@@ -1,33 +1,34 @@
 // get top 500 stories
 function hackernewsTopStories() {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
-           if (xmlhttp.status == 200) {
-             var topStories = JSON.parse(xmlhttp.responseText);
-             for (var i = 0; i < 30; i++) {
-               newPost(topStories[i], i)
-             }
-           }
-           else if (xmlhttp.status == 400) {
-              alert('There was an error 400');
-           }
-           else {
-               alert('something else other than 200 was returned');
-           }
-        }
-    };
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = async function() {
+    if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+       if (xmlhttp.status == 200) {
+         var topStories = JSON.parse(xmlhttp.responseText);
+         for (var i = 0; i < 30; i++) {
+           newPost(topStories[i], i) //run newPost function for 30 articles
+         }
+       }
+       else if (xmlhttp.status == 400) {
+          alert('There was an error 400');
+       }
+       else {
+           alert('something else other than 200 was returned');
+       }
+    }
+  };
 
-    xmlhttp.open("GET", "https://hacker-news.firebaseio.com/v0/topstories.json");
-    xmlhttp.send();
+  xmlhttp.open("GET", "https://hacker-news.firebaseio.com/v0/topstories.json");
+  xmlhttp.send();
 }
-
+//ajax call and append for each article number
 function newPost(postNumber, i) {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
        if (xmlhttp.status == 200) {
          var apiArticle = JSON.parse(xmlhttp.responseText);
+         var footer = document.querySelector("footer")
          var hostname = apiArticle.url.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0]; //parse url into only hostname
          var newArticle = document.createElement("article");
          newArticle.innerHTML = `
@@ -50,8 +51,7 @@ function newPost(postNumber, i) {
          </div>
          <div class="spacer" style="height: 5px; background-color: #f6f6ef">
          </div>`;
-
-         document.body.appendChild(newArticle);
+         document.body.insertBefore(newArticle, footer);
 
        }
        else if (xmlhttp.status == 400) {
@@ -66,6 +66,5 @@ function newPost(postNumber, i) {
   xmlhttp.open("GET", "https://hacker-news.firebaseio.com/v0/item/"+postNumber+".json");
   xmlhttp.send();
 }
-
 
 hackernewsTopStories()
