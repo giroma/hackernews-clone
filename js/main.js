@@ -1,10 +1,11 @@
 // get top 500 stories
+var topStories = [] //make the top stories array global for later use
 function hackernewsTopStories() {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = async function() {
     if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
        if (xmlhttp.status == 200) {
-         var topStories = JSON.parse(xmlhttp.responseText);
+         topStories = JSON.parse(xmlhttp.responseText);
          for (var i = 0; i < 31; i++) {
            newPost(topStories[i]) //run newPost function for 30 articles
          }
@@ -22,7 +23,7 @@ function hackernewsTopStories() {
   xmlhttp.send();
 }
 //ajax call and append for each article number
-var listNumber = 1;
+var listNumber = 1; //denotes the visual number for each article, incremented on append
 function newPost(postNumber) {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
@@ -54,7 +55,7 @@ function newPost(postNumber) {
          </div> `
          document.body.insertBefore(newArticle, footer);
 
-         listNumber += 1;
+         listNumber += 1; //add to
        }
        else if (xmlhttp.status == 400) {
           alert('There was an error 400');
@@ -69,7 +70,7 @@ function newPost(postNumber) {
   xmlhttp.send();
 }
 
-var parseTime = function(date) {
+var parseTime = function(date) { //parses unix time into timeago display
   var seconds = Math.floor((new Date(Date.now()) - (date+'000')) / 1000);
   var interval = Math.floor(seconds / 31536000);
   if (interval > 1) {
@@ -93,5 +94,22 @@ var parseTime = function(date) {
   }
   return Math.floor(seconds) + " seconds ago";
 }
+
+function getDistFromBottom() {
+  var scrollPosition = window.pageYOffset;
+  var windowSize     = window.innerHeight;
+  var bodyHeight     = document.body.offsetHeight;
+  return Math.max(bodyHeight - (scrollPosition + windowSize), 0);
+}
+
+var paginationNumber = 1; //start at 1 and increments for each pagination
+document.addEventListener('scroll', function() {
+  if (getDistFromBottom() === 0) {;
+    for (i = paginationNumber*30; i < paginationNumber*30+30; i++) {
+      newPost(topStories[i+1]) //run newPost function for 30 articles
+    }
+    paginationNumber += 1;
+  }
+});
 
 hackernewsTopStories()
