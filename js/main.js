@@ -5,8 +5,8 @@ function hackernewsTopStories() {
     if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
        if (xmlhttp.status == 200) {
          var topStories = JSON.parse(xmlhttp.responseText);
-         for (var i = 0; i < 30; i++) {
-           newPost(topStories[i], i) //run newPost function for 30 articles
+         for (var i = 0; i < 31; i++) {
+           newPost(topStories[i]) //run newPost function for 30 articles
          }
        }
        else if (xmlhttp.status == 400) {
@@ -22,7 +22,8 @@ function hackernewsTopStories() {
   xmlhttp.send();
 }
 //ajax call and append for each article number
-function newPost(postNumber, i) {
+var listNumber = 1;
+function newPost(postNumber) {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
@@ -33,7 +34,7 @@ function newPost(postNumber, i) {
          var newArticle = document.createElement("article");
          newArticle.innerHTML = `
          <div class="article-title">
-           <span class="number">${i+1}.</span>
+           <span class="number">${listNumber}.</span>
            <img class="arrow" src="images/arrow.gif" alt="arrow">
            <span class="title"><a href="${apiArticle.url}">${apiArticle.title}</a></span>
            <span class="url">(${hostname})</span>
@@ -53,6 +54,7 @@ function newPost(postNumber, i) {
          </div>`;
          document.body.insertBefore(newArticle, footer);
 
+         listNumber += 1;
        }
        else if (xmlhttp.status == 400) {
           alert('There was an error 400');
