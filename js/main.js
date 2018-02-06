@@ -43,7 +43,7 @@ function newPost(postNumber) {
            <span>${apiArticle.score}</span>
            <span>points by</span>
            <span>${apiArticle.by}</span>
-           <span>${apiArticle.time}</span>
+           <span>${parseTime(apiArticle.time)}</span>
            <span>|</span>
            <span>hide</span>
            <span>|</span>
@@ -51,7 +51,7 @@ function newPost(postNumber) {
            <span>comments</span>
          </div>
          <div class="spacer" style="height: 5px; background-color: #f6f6ef">
-         </div>`;
+         </div> `
          document.body.insertBefore(newArticle, footer);
 
          listNumber += 1;
@@ -67,6 +67,34 @@ function newPost(postNumber) {
 
   xmlhttp.open("GET", "https://hacker-news.firebaseio.com/v0/item/"+postNumber+".json");
   xmlhttp.send();
+}
+
+var parseTime = function(date) {
+
+  var seconds = Math.floor((new Date(Date.now()) - (date+'000')) / 1000);
+
+  var interval = Math.floor(seconds / 31536000);
+
+  if (interval > 1) {
+    return interval + " years ago";
+  }
+  interval = Math.floor(seconds / 2592000);
+  if (interval > 1) {
+    return interval + " months ago";
+  }
+  interval = Math.floor(seconds / 86400);
+  if (interval > 1) {
+    return interval + " days ago";
+  }
+  interval = Math.floor(seconds / 3600);
+  if (interval > 1) {
+    return interval + " hours ago";
+  }
+  interval = Math.floor(seconds / 60);
+  if (interval > 1) {
+    return interval + " minutes ago";
+  }
+  return Math.floor(seconds) + " seconds ago";
 }
 
 hackernewsTopStories()
