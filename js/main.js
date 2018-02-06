@@ -5,8 +5,8 @@ function hackernewsTopStories() {
   xmlhttp.onreadystatechange = async function() {
     if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
        if (xmlhttp.status == 200) {
-         topStories = JSON.parse(xmlhttp.responseText);
-         for (var i = 0; i < 31; i++) {
+         topStories = JSON.parse(xmlhttp.responseText); //populates the array with 500 articles
+         for (var i = 0; i < 30; i++) {
            newPost(topStories[i]) //run newPost function for 30 articles
          }
        }
@@ -30,8 +30,9 @@ function newPost(postNumber) {
     if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
        if (xmlhttp.status == 200) {
          var apiArticle = JSON.parse(xmlhttp.responseText);
-         var footer = document.querySelector("footer")
-         var hostname = apiArticle.url.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0]; //parse url into only hostname
+         var footer = document.querySelector("footer");
+         var hostname = apiArticle.url || ""; //empty url if none given from api, this way replace doesnt error
+         var hostname = hostname.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0]; //parse url into only hostname
          var newArticle = document.createElement("article");
          newArticle.innerHTML = `
          <div class="article-title">
@@ -94,7 +95,7 @@ var parseTime = function(date) { //parses unix time into timeago display
   }
   return Math.floor(seconds) + " seconds ago";
 }
-
+//calculates distance from bottom of window
 function getDistFromBottom() {
   var scrollPosition = window.pageYOffset;
   var windowSize     = window.innerHeight;
@@ -104,9 +105,9 @@ function getDistFromBottom() {
 
 var paginationNumber = 1; //start at 1 and increments for each pagination
 document.addEventListener('scroll', function() {
-  if (getDistFromBottom() === 0) {;
+  if (getDistFromBottom() === 0) {; //if the scroll gets to zero
     for (i = paginationNumber*30; i < paginationNumber*30+30; i++) {
-      newPost(topStories[i+1]) //run newPost function for 30 articles
+      newPost(topStories[i]) //run newPost function for 30 articles
     }
     paginationNumber += 1;
   }
