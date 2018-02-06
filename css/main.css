@@ -29,11 +29,17 @@ nav li{
   padding-left: 3pt;
 }
 
-
-
 a{
   text-decoration: none;
   color: black;
+}
+
+.article-details a{
+  color: #828282;
+}
+
+.article-details a:hover{
+  text-decoration: underline;
 }
 
 nav a{
@@ -110,6 +116,8 @@ footer div:nth-child(2){
   padding-top: 10pt;
 }
 footer div:nth-child(3){
+  display: inline-block;
+  margin: 0 auto;
   font-size: 8pt;
 }
 footer div:nth-child(4){

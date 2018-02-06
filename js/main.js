@@ -44,13 +44,12 @@ function newPost(postNumber) {
          <div class="article-details">
            <span>${apiArticle.score}</span>
            <span>points by</span>
-           <span>${apiArticle.by}</span>
-           <span>${parseTime(apiArticle.time)}</span>
+           <span><a href="https://news.ycombinator.com/user?id=${apiArticle.by}">${apiArticle.by}</a></span>
+           <span><a href="https://news.ycombinator.com/item?id=${postNumber}">${parseTime(apiArticle.time)}</a></span>
            <span>|</span>
            <span>hide</span>
            <span>|</span>
-           <span>${apiArticle.descendants}</span>
-           <span>comments</span>
+           <span><a href="https://news.ycombinator.com/item?id=${postNumber}">${apiArticle.descendants} comments</a></span>
          </div>
          <div class="spacer" style="height: 5px; background-color: #f6f6ef">
          </div> `
