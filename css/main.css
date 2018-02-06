@@ -66,7 +66,7 @@ article {
   font-size: 10pt;
 }
 
-article:nth-child(-n+11) {
+article:nth-child(-n+11) .article-title {
   padding-left: 6pt;
 }
 
@@ -75,7 +75,8 @@ article a:visited{
 }
 
 .article-details {
-  padding-left: 33px;
+  padding-left: 41px;
+  font-size: 7pt;
 }
 
 article .url{
@@ -88,10 +89,6 @@ article .url{
 
 .arrow {
   width: 10px;
-}
-
-.article-details {
-  font-size: 7pt;
 }
 
 footer {

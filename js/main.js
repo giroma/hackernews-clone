@@ -70,11 +70,8 @@ function newPost(postNumber) {
 }
 
 var parseTime = function(date) {
-
   var seconds = Math.floor((new Date(Date.now()) - (date+'000')) / 1000);
-
   var interval = Math.floor(seconds / 31536000);
-
   if (interval > 1) {
     return interval + " years ago";
   }
