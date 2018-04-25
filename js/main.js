@@ -1,18 +1,19 @@
 // get top 500 stories
 var topStories = [] //make the top stories array global for later use
 var promises = [] //used to make sure the individual article ajax calls are all done before appending
+var articlesPerPage = 30; //declare how many articles to load when at bottom
 function hackernewsTopStories() {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = async function() {
     if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4;
         if (xmlhttp.status == 200) {
           topStories = JSON.parse(xmlhttp.responseText); //populates the array with 500 articles
-          for (var i = 0; i < 30; i++) {//run newPost function for 30 articles
+          for (var i = 0; i < articlesPerPage; i++) {//run newPost function for articlesPerPage articles
             promises.push(newPost(topStories[i], i)) //each individual article ajax call is a promise
           }
-          Promise.all(promises).then(function() {//make sure all 30 ajax calls are resolved
+          Promise.all(promises).then(function() {//make sure all articlesPerPage ajax calls are resolved
             var footer = document.querySelector("footer");
-            for (var i = 0; i < 30; i++) {
+            for (var i = 0; i < articlesPerPage; i++) {
               document.body.insertBefore(articles[i], footer)
             }
           })
@@ -31,7 +32,6 @@ function hackernewsTopStories() {
 }
 //ajax call and append for each article number
 var articles = []
-// var listNumber = 1; //denotes the visual number for each article, incremented on append
 function newPost(postNumber, index) {
   return new Promise(function(resolve, reject){
     var xmlhttp = new XMLHttpRequest();
@@ -39,11 +39,9 @@ function newPost(postNumber, index) {
       if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
         if (xmlhttp.status == 200) {
           var apiArticle = JSON.parse(xmlhttp.responseText);
-          var footer = document.querySelector("footer");
-          var url = apiArticle.url ? `(${new URL(apiArticle.url).hostname.replace("www.", "")})` : "" //empty url if none given from api
           var newArticle = document.createElement("article");
           articleHTML(apiArticle, index, postNumber, newArticle)
-          articles[index] = newArticle //place article in array with index matching its
+          articles[index] = newArticle //place article in array with index matching its postNumber location
           resolve()//resolve the promise
         }
         else if (xmlhttp.status == 400) {
@@ -118,12 +116,12 @@ function getDistFromBottom() {
 var paginationNumber = 1; //start at 1 and increments for each pagination
 document.addEventListener('scroll', function() {
   if (getDistFromBottom() === 0) {; //if the scroll gets to zero
-    for (var i = paginationNumber*30; i < paginationNumber*30+30; i++) {
-      promises.push(newPost(topStories[i], i)) //run newPost function for 30 articles
+    for (var i = paginationNumber*articlesPerPage; i < paginationNumber*articlesPerPage+articlesPerPage; i++) {
+      promises.push(newPost(topStories[i], i)) //run newPost function for articles
     }
-    Promise.all(promises).then(function() {//make sure all 30 ajax calls are resolved
+    Promise.all(promises).then(function() {//make sure all ajax calls are resolved first
       var footer = document.querySelector("footer");
-      for (var i = paginationNumber*30; i < paginationNumber*30+30; i++) {
+      for (var i = paginationNumber*articlesPerPage; i < paginationNumber*articlesPerPage+articlesPerPage; i++) {
         document.body.insertBefore(articles[i], footer)
       }
       paginationNumber += 1;
