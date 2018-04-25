@@ -40,15 +40,14 @@ function newPost(postNumber, index) {
         if (xmlhttp.status == 200) {
           var apiArticle = JSON.parse(xmlhttp.responseText);
           var footer = document.querySelector("footer");
-          var hostname = apiArticle.url || ""; //empty url if none given from api, this way replace doesnt error
-          var hostname = hostname.replace('http://','').replace('https://','').replace('www.','').split(/[/?#]/)[0]; //parse url into only hostname
+          var url = apiArticle.url ? `(${new URL(apiArticle.url).hostname.replace("www.", "")})` : "" //empty url if none given from api
           var newArticle = document.createElement("article");
           newArticle.innerHTML = `
           <div class="article-title">
             <span class="number">${index + 1}.</span>
             <img class="arrow" src="images/arrow.gif" alt="arrow">
             <span class="title"><a href="${apiArticle.url}">${apiArticle.title}</a></span>
-            <span class="url">(${hostname})</span>
+            <span class="url">${url}</span>
           </div>
           <div class="article-details">
             <span>${apiArticle.score}</span>
