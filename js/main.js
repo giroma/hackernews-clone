@@ -42,25 +42,7 @@ function newPost(postNumber, index) {
           var footer = document.querySelector("footer");
           var url = apiArticle.url ? `(${new URL(apiArticle.url).hostname.replace("www.", "")})` : "" //empty url if none given from api
           var newArticle = document.createElement("article");
-          newArticle.innerHTML = `
-          <div class="article-title">
-            <span class="number">${index + 1}.</span>
-            <img class="arrow" src="images/arrow.gif" alt="arrow">
-            <span class="title"><a href="${apiArticle.url}">${apiArticle.title}</a></span>
-            <span class="url">${url}</span>
-          </div>
-          <div class="article-details">
-            <span>${apiArticle.score}</span>
-            <span>points by</span>
-            <span><a href="https://news.ycombinator.com/user?id=${apiArticle.by}">${apiArticle.by}</a></span>
-            <span><a href="https://news.ycombinator.com/item?id=${postNumber}">${parseTime(apiArticle.time)}</a></span>
-            <span>|</span>
-            <span>hide</span>
-            <span>|</span>
-            <span><a href="https://news.ycombinator.com/item?id=${postNumber}">${apiArticle.descendants} comments</a></span>
-          </div>
-          <div class="spacer" style="height: 5px; background-color: #f6f6ef">
-          </div> `
+          articleHTML(apiArticle, index, postNumber, newArticle)
           articles[index] = newArticle //place article in array with index matching its
           resolve()//resolve the promise
         }
@@ -75,6 +57,30 @@ function newPost(postNumber, index) {
     xmlhttp.open("GET", "https://hacker-news.firebaseio.com/v0/item/"+postNumber+".json");
     xmlhttp.send();
   })
+}
+//creates the article html
+var articleHTML = function(apiArticle, index, postNumber, newArticle){
+  var footer = document.querySelector("footer");
+  var url = apiArticle.url ? `(${new URL(apiArticle.url).hostname.replace("www.", "")})` : "" //empty url if none given from api
+  newArticle.innerHTML = `
+  <div class="article-title">
+    <span class="number">${index + 1}.</span>
+    <img class="arrow" src="images/arrow.gif" alt="arrow">
+    <span class="title"><a href="${apiArticle.url}">${apiArticle.title}</a></span>
+    <span class="url">${url}</span>
+  </div>
+  <div class="article-details">
+    <span>${apiArticle.score}</span>
+    <span>points by</span>
+    <span><a href="https://news.ycombinator.com/user?id=${apiArticle.by}">${apiArticle.by}</a></span>
+    <span><a href="https://news.ycombinator.com/item?id=${postNumber}">${parseTime(apiArticle.time)}</a></span>
+    <span>|</span>
+    <span>hide</span>
+    <span>|</span>
+    <span><a href="https://news.ycombinator.com/item?id=${postNumber}">${apiArticle.descendants} comments</a></span>
+  </div>
+  <div class="spacer" style="height: 5px; background-color: #f6f6ef">
+  </div> `
 }
 
 var parseTime = function(date) { //parses unix time into timeago display
